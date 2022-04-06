@@ -11,7 +11,12 @@ const gameOfLife = (starter) => {
   });
 
   // Helper function works out whether cell should be alive or dead based on total live neighbours
-  const checkIfAliveOrDead = (curr, total) => {
+  const checkIfAliveOrDead = (curr, neighbours) => {
+    // Calculate total live neighbours by summing neighbours array
+    let total = neighbours.reduce((acc, neighbour) => {
+      return acc + neighbour;
+    });
+
     // If cell currently alive
     if (curr == 1) {
       // Less than 2 live neighbours
@@ -57,19 +62,17 @@ const gameOfLife = (starter) => {
           if (j == 0) {
             // Get values of neighbours
             let neighbours = [arr[i][j + 1], arr[i + 1][j], arr[i + 1][j + 1]];
-            let total = neighbours[0] + neighbours[1] + neighbours[2];
 
             // Helper function returns 0 or 1 based on current state & total neighbours
             // Change this cell to whatever is returned
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Top-right corner cell
           } else if (j == arr[i].length - 1) {
             // Get values of neighbours
             let neighbours = [arr[i][j - 1], arr[i + 1][j], arr[i + 1][j - 1]];
-            let total = neighbours[0] + neighbours[1] + neighbours[2];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Other cells on top row
           } else {
@@ -81,14 +84,8 @@ const gameOfLife = (starter) => {
               arr[i + 1][j],
               arr[i + 1][j + 1],
             ];
-            let total =
-              neighbours[0] +
-              neighbours[1] +
-              neighbours[2] +
-              neighbours[3] +
-              neighbours[4];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
           }
         }
 
@@ -102,17 +99,15 @@ const gameOfLife = (starter) => {
           if (j == 0) {
             // Get values of neighbours
             let neighbours = [arr[i][j + 1], arr[i - 1][j], arr[i - 1][j + 1]];
-            let total = neighbours[0] + neighbours[1] + neighbours[2];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Bottom-right corner cell
           } else if (j == arr[i].length - 1) {
             // Get values of neighbours
             let neighbours = [arr[i][j - 1], arr[i - 1][j], arr[i - 1][j - 1]];
-            let total = neighbours[0] + neighbours[1] + neighbours[2];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Other cells on bottom row
           } else {
@@ -124,14 +119,8 @@ const gameOfLife = (starter) => {
               arr[i - 1][j],
               arr[i - 1][j + 1],
             ];
-            let total =
-              neighbours[0] +
-              neighbours[1] +
-              neighbours[2] +
-              neighbours[3] +
-              neighbours[4];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
           }
         }
 
@@ -151,14 +140,8 @@ const gameOfLife = (starter) => {
               arr[i + 1][j],
               arr[i + 1][j + 1],
             ];
-            let total =
-              neighbours[0] +
-              neighbours[1] +
-              neighbours[2] +
-              neighbours[3] +
-              neighbours[4];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Last (right) cell
           } else if (j == arr[i].length - 1) {
@@ -170,14 +153,8 @@ const gameOfLife = (starter) => {
               arr[i + 1][j - 1],
               arr[i + 1][j],
             ];
-            let total =
-              neighbours[0] +
-              neighbours[1] +
-              neighbours[2] +
-              neighbours[3] +
-              neighbours[4];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
 
             // Other cells on middle rows - all have 8 neighbours
           } else {
@@ -192,17 +169,8 @@ const gameOfLife = (starter) => {
               arr[i + 1][j],
               arr[i + 1][j + 1],
             ];
-            let total =
-              neighbours[0] +
-              neighbours[1] +
-              neighbours[2] +
-              neighbours[3] +
-              neighbours[4] +
-              neighbours[5] +
-              neighbours[6] +
-              neighbours[7];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], total);
+            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
           }
         }
       }
