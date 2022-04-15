@@ -52,127 +52,83 @@ const gameOfLife = (starter) => {
   const stepInTime = () => {
     // For every row
     for (let i = 0; i < arr.length; i++) {
-      // TOP ROW
-      if (i == 0) {
-        // Loop through each cell
-        for (let j = 0; j < arr[i].length; j++) {
-          // Content of each cell = arr[i][j]
+      // Loop through each cell
+      for (let j = 0; j < arr[i].length; j++) {
+        let neighbours = [];
+        // Top-left cell
+        if (i == 0 && j == 0) {
+          // Get values of neighbours
+          neighbours = [arr[i][j + 1], arr[i + 1][j], arr[i + 1][j + 1]];
 
-          // If top-left corner cell, will have 3 neighbours - right, below and diag (second cell in second row)
-          if (j == 0) {
-            // Get values of neighbours
-            let neighbours = [arr[i][j + 1], arr[i + 1][j], arr[i + 1][j + 1]];
+          // Top-right cell
+        } else if (i == 0 && j == arr[i].length - 1) {
+          neighbours = [arr[i][j - 1], arr[i + 1][j], arr[i + 1][j - 1]];
 
-            // Helper function returns 0 or 1 based on current state & total neighbours
-            // Change this cell to whatever is returned
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
+          // Other cells on top row
+        } else if (i == 0) {
+          neighbours = [
+            arr[i][j - 1],
+            arr[i][j + 1],
+            arr[i + 1][j - 1],
+            arr[i + 1][j],
+            arr[i + 1][j + 1],
+          ];
 
-            // Top-right corner cell
-          } else if (j == arr[i].length - 1) {
-            // Get values of neighbours
-            let neighbours = [arr[i][j - 1], arr[i + 1][j], arr[i + 1][j - 1]];
+          // Bottom-left cell
+        } else if (i == arr.length - 1 && j == 0) {
+          neighbours = [arr[i][j + 1], arr[i - 1][j], arr[i - 1][j + 1]];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
+          // Bottom-right cell
+        } else if (i == arr.length - 1 && j == arr[i].length - 1) {
+          neighbours = [arr[i][j - 1], arr[i - 1][j], arr[i - 1][j - 1]];
 
-            // Other cells on top row
-          } else {
-            // Get values of neighbours
-            let neighbours = [
-              arr[i][j - 1],
-              arr[i][j + 1],
-              arr[i + 1][j - 1],
-              arr[i + 1][j],
-              arr[i + 1][j + 1],
-            ];
+          // Other cells on bottom row
+        } else if (i == arr.length - 1) {
+          neighbours = [
+            arr[i][j - 1],
+            arr[i][j + 1],
+            arr[i - 1][j - 1],
+            arr[i - 1][j],
+            arr[i - 1][j + 1],
+          ];
 
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-          }
+          // First cell on middle rows
+        } else if (i != 0 && i != arr.length - 1 && j == 0) {
+          neighbours = [
+            arr[i][j + 1],
+            arr[i - 1][j],
+            arr[i - 1][j + 1],
+            arr[i + 1][j],
+            arr[i + 1][j + 1],
+          ];
+
+          // Last cell on middle rows
+        } else if (i != 0 && i != arr.length - 1 && j == arr[i].length - 1) {
+          neighbours = [
+            arr[i][j - 1],
+            arr[i - 1][j],
+            arr[i - 1][j - 1],
+            arr[i + 1][j - 1],
+            arr[i + 1][j],
+          ];
+
+          // Other cells on middle rows
+        } else {
+          neighbours = [
+            arr[i][j - 1],
+            arr[i][j + 1],
+            arr[i - 1][j - 1],
+            arr[i - 1][j],
+            arr[i - 1][j + 1],
+            arr[i + 1][j - 1],
+            arr[i + 1][j],
+            arr[i + 1][j + 1],
+          ];
         }
 
-        // BOTTOM ROW
-      } else if (i == arr.length - 1) {
-        // Loop through each cell
-        for (let j = 0; j < arr[i].length; j++) {
-          // Content of each cell = arr[i][j]
-
-          // If bottom-left corner cell, will have 3 neighbours - right, above and diag (second cell in next row up)
-          if (j == 0) {
-            // Get values of neighbours
-            let neighbours = [arr[i][j + 1], arr[i - 1][j], arr[i - 1][j + 1]];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-
-            // Bottom-right corner cell
-          } else if (j == arr[i].length - 1) {
-            // Get values of neighbours
-            let neighbours = [arr[i][j - 1], arr[i - 1][j], arr[i - 1][j - 1]];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-
-            // Other cells on bottom row
-          } else {
-            // Get values of neighbours
-            let neighbours = [
-              arr[i][j - 1],
-              arr[i][j + 1],
-              arr[i - 1][j - 1],
-              arr[i - 1][j],
-              arr[i - 1][j + 1],
-            ];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-          }
-        }
-
-        // MIDDLE ROWS
-      } else {
-        // Loop through each cell
-        for (let j = 0; j < arr[i].length; j++) {
-          // Content of each cell = arr[i][j]
-
-          // If first (left) cell, will have 5 neighbours - right, above, below & 2 diags
-          if (j == 0) {
-            // Get values of neighbours
-            let neighbours = [
-              arr[i][j + 1],
-              arr[i - 1][j],
-              arr[i - 1][j + 1],
-              arr[i + 1][j],
-              arr[i + 1][j + 1],
-            ];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-
-            // Last (right) cell
-          } else if (j == arr[i].length - 1) {
-            // Get values of neighbours
-            let neighbours = [
-              arr[i][j - 1],
-              arr[i - 1][j],
-              arr[i - 1][j - 1],
-              arr[i + 1][j - 1],
-              arr[i + 1][j],
-            ];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-
-            // Other cells on middle rows - all have 8 neighbours
-          } else {
-            // Get values of neighbours
-            let neighbours = [
-              arr[i][j - 1],
-              arr[i][j + 1],
-              arr[i - 1][j - 1],
-              arr[i - 1][j],
-              arr[i - 1][j + 1],
-              arr[i + 1][j - 1],
-              arr[i + 1][j],
-              arr[i + 1][j + 1],
-            ];
-
-            newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
-          }
-        }
+        // Helper function returns 0 or 1 based on current state & total neighbours
+        // Change this cell to whatever is returned
+        newArray[i][j] = checkIfAliveOrDead(arr[i][j], neighbours);
       }
     }
 
