@@ -17,35 +17,18 @@ const gameOfLife = (starter) => {
       return acc + neighbour;
     });
 
-    // If cell currently alive
-    if (curr == 1) {
-      // Less than 2 live neighbours
-      if (total < 2) {
-        // This cell dies
+    // Work out whether cell should be alive or dead based on current state & total live neighbours
+    switch (true) {
+      case curr == 1 && total < 2:
         return 0;
-
-        // Else if 2 or 3 neighbours alive
-      } else if (total == 2 || total == 3) {
-        // This cell lives
+      case curr == 1 && (total == 2 || total == 3):
         return 1;
-        //
-        // Else if more than 3
-      } else {
-        // This cell dies
+      case curr == 1 && total > 3:
         return 0;
-      }
-
-      // If this cell is currently dead - becomes alive if 3 live neighbours
-    } else {
-      if (total == 3) {
-        // If dead and had 3 live neighbours
-        // Cell becomes live
+      case curr == 0 && total == 3:
         return 1;
-
-        // Else stays dead
-      } else {
+      default:
         return 0;
-      }
     }
   };
 
@@ -55,75 +38,82 @@ const gameOfLife = (starter) => {
       // Loop through each cell
       for (let j = 0; j < arr[i].length; j++) {
         let neighbours = [];
-        // Top-left cell
-        if (i == 0 && j == 0) {
-          // Get values of neighbours
-          neighbours = [arr[i][j + 1], arr[i + 1][j], arr[i + 1][j + 1]];
 
+        switch (true) {
+          // TOP ROW
+          // Top-left cell
+          case i == 0 && j == 0:
+            neighbours = [arr[i][j + 1], arr[i + 1][j], arr[i + 1][j + 1]];
+            break;
           // Top-right cell
-        } else if (i == 0 && j == arr[i].length - 1) {
-          neighbours = [arr[i][j - 1], arr[i + 1][j], arr[i + 1][j - 1]];
-
+          case i == 0 && j == arr[i].length - 1:
+            neighbours = [arr[i][j - 1], arr[i + 1][j], arr[i + 1][j - 1]];
+            break;
           // Other cells on top row
-        } else if (i == 0) {
-          neighbours = [
-            arr[i][j - 1],
-            arr[i][j + 1],
-            arr[i + 1][j - 1],
-            arr[i + 1][j],
-            arr[i + 1][j + 1],
-          ];
+          case i == 0:
+            neighbours = [
+              arr[i][j - 1],
+              arr[i][j + 1],
+              arr[i + 1][j - 1],
+              arr[i + 1][j],
+              arr[i + 1][j + 1],
+            ];
+            break;
 
+          // BOTTOM ROW
           // Bottom-left cell
-        } else if (i == arr.length - 1 && j == 0) {
-          neighbours = [arr[i][j + 1], arr[i - 1][j], arr[i - 1][j + 1]];
-
+          case i == arr.length - 1 && j == 0:
+            neighbours = [arr[i][j + 1], arr[i - 1][j], arr[i - 1][j + 1]];
+            break;
           // Bottom-right cell
-        } else if (i == arr.length - 1 && j == arr[i].length - 1) {
-          neighbours = [arr[i][j - 1], arr[i - 1][j], arr[i - 1][j - 1]];
-
+          case i == arr.length - 1 && j == arr[i].length - 1:
+            neighbours = [arr[i][j - 1], arr[i - 1][j], arr[i - 1][j - 1]];
+            break;
           // Other cells on bottom row
-        } else if (i == arr.length - 1) {
-          neighbours = [
-            arr[i][j - 1],
-            arr[i][j + 1],
-            arr[i - 1][j - 1],
-            arr[i - 1][j],
-            arr[i - 1][j + 1],
-          ];
+          case i == arr.length - 1:
+            neighbours = [
+              arr[i][j - 1],
+              arr[i][j + 1],
+              arr[i - 1][j - 1],
+              arr[i - 1][j],
+              arr[i - 1][j + 1],
+            ];
+            break;
 
-          // First cell on middle rows
-        } else if (i != 0 && i != arr.length - 1 && j == 0) {
-          neighbours = [
-            arr[i][j + 1],
-            arr[i - 1][j],
-            arr[i - 1][j + 1],
-            arr[i + 1][j],
-            arr[i + 1][j + 1],
-          ];
-
+          // MIDDLE ROWS
+          // First cell
+          case i != 0 && i != arr.length - 1 && j == 0:
+            neighbours = [
+              arr[i][j + 1],
+              arr[i - 1][j],
+              arr[i - 1][j + 1],
+              arr[i + 1][j],
+              arr[i + 1][j + 1],
+            ];
+            break;
           // Last cell on middle rows
-        } else if (i != 0 && i != arr.length - 1 && j == arr[i].length - 1) {
-          neighbours = [
-            arr[i][j - 1],
-            arr[i - 1][j],
-            arr[i - 1][j - 1],
-            arr[i + 1][j - 1],
-            arr[i + 1][j],
-          ];
-
-          // Other cells on middle rows
-        } else {
-          neighbours = [
-            arr[i][j - 1],
-            arr[i][j + 1],
-            arr[i - 1][j - 1],
-            arr[i - 1][j],
-            arr[i - 1][j + 1],
-            arr[i + 1][j - 1],
-            arr[i + 1][j],
-            arr[i + 1][j + 1],
-          ];
+          case i != 0 && i != arr.length - 1 && j == arr[i].length - 1:
+            neighbours = [
+              arr[i][j - 1],
+              arr[i - 1][j],
+              arr[i - 1][j - 1],
+              arr[i + 1][j - 1],
+              arr[i + 1][j],
+            ];
+            break;
+          // Other cells on middle rows - all have 8 neighbours
+          default:
+            neighbours = [
+              arr[i][j - 1],
+              arr[i][j + 1],
+              arr[i - 1][j - 1],
+              arr[i - 1][j],
+              arr[i - 1][j + 1],
+              arr[i + 1][j - 1],
+              arr[i + 1][j],
+              arr[i + 1][j + 1],
+            ];
+            break;
         }
 
         // Helper function returns 0 or 1 based on current state & total neighbours
